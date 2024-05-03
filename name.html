@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess game</title>
+</head>
+<body>
+  <label for = "name">Enter your name:</label><input type = "text" id = "me" placeholder="Name"></input><button type="button" id="btn" disabled>Start</button>
+  <script>
+ var my_self = document.getElementById("me")
+ var button = document.getElementById("btn")
+ my_self.addEventListener("input",() =>{
+   if(my_self.value.length >= 3){
+       button.disabled = false
+   }else{
+    button.disabled = true
+   }
+ })
+ button.addEventListener("click",()=>{
+  var queryString =  my_self.value;
+    window.location="rooms.html" +"?"+ queryString
+ })
+</script>
+</body>
+</html>
