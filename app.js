@@ -122,7 +122,7 @@ class Board{
         moves = moves.concat(enpassant)
        }
       if(moves.indexOf(id) !== -1){
-        var sound = new Audio("479457-Moving_Random_Chess_Pieces_08.wav")
+        var sound = new Audio("479457-Moving_Random_Chess_Pieces_08.WAV")
         sound.play()
         this.all_moves.push(old_parent+"-"+id)
         this.last_move = []
