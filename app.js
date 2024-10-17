@@ -317,6 +317,7 @@ class Board{
        var black_king = document.getElementById("king_b").parentNode.id
        var white_king = document.getElementById("king_w").parentNode.id
        king.Incheck(black_king,white_king)
+       board.apply_square_color([],null)
   }
   create_new_promote_piece(piece_id,color,counter,square,id_color,new_y){
 var cordinates = [[8,1],[7,2],[6,3],[5,4],[4,5],[3,6],[2,7],[1,8]]
