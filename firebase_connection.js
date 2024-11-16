@@ -10,3 +10,5 @@ const firebaseConfig = {
   };
   //Initialize firebase
 const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const users_data = db.collection("usersDetails");
