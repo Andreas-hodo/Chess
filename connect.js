@@ -18,3 +18,13 @@ all_buttons.forEach(button =>{
      }
      })
   })
+
+var names = [];
+users_data.get().then((snapshot) => {
+  snapshot.forEach((doc) => {
+   names.push(doc.data().name)
+  });
+}).catch((error) => {
+  alert("Something went wrong...")
+});
+console.log(names);
