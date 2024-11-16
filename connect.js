@@ -31,11 +31,10 @@ users_data.get().then((snapshot) => {
 }).catch((error) => {
   alert("Something went wrong...")
 });
- console.log(signup_username)
-  //if(names.indexOf(signup_username) != -1){
-  // alert("This username is Already taken")
-  // signup_username = ""
- //}
+  if(names.indexOf(signup_username) != -1){
+  alert("This username is Already taken")
+  signup_username = ""
+ }
 console.log(names);
 })
 
