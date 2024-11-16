@@ -29,7 +29,7 @@ users_data.get().then((snapshot) => {
    names.push(doc.data().name)
   });
  console.log(signup_username)
- if(names.indexOf(signup_username) != -1){
+ if(names.indexOf(signup_username)) != -1){
    alert("This username is Already taken")
    signup_username = ""
 }).catch((error) => {
