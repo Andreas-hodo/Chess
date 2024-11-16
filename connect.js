@@ -28,7 +28,7 @@ users_data.get().then((snapshot) => {
   snapshot.forEach((doc) => {
    names.push(doc.data().name)
   });
- if(name.indexOf(signup_username) != -1){
+ if(names.indexOf(signup_username) != -1){
    alert("This username is Already taken")
    signup_username = ""
 }).catch((error) => {
