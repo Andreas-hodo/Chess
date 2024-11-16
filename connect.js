@@ -4,6 +4,7 @@ const signup_link = document.getElementById("member_sign")
 const login_btn =  document.getElementById("loginbtn")
 const signup_btn =  document.getElementById("signupbtn")
 const elem = document.getElementById("login_form")
+const signup_username = document.getElementById("username_signup").value
 login_link.addEventListener("click",()=>{
  elem.style.zIndex = 1;
 })
@@ -27,6 +28,9 @@ users_data.get().then((snapshot) => {
   snapshot.forEach((doc) => {
    names.push(doc.data().name)
   });
+ if(name.indexOf(signup_username) != -1){
+   alert("This username is Already taken")
+   signup_username = ""
 }).catch((error) => {
   alert("Something went wrong...")
 });
