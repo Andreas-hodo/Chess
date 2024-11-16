@@ -99,7 +99,7 @@ input{
     font-size:0.8em;
     width: 35%;
 }
-#password{
+#password_login,#password_signup{
     position: relative;
     display: flex;
     top:-2%; 
