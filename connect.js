@@ -32,7 +32,7 @@ users_data.get().then((snapshot) => {
  if(names.indexOf(signup_username) != -1){
    alert("This username is Already taken")
    signup_username = ""
-    }
+ }
 }).catch((error) => {
   alert("Something went wrong...")
 });
