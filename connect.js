@@ -20,7 +20,8 @@ all_buttons.forEach(button =>{
      }
      })
   })
-signup_btn.addEventListener("click",()=>{
+signup_btn.addEventListener("click",(e)=>{
+ e.preventDefault();
  var names = [];
 users_data.get().then((snapshot) => {
   snapshot.forEach((doc) => {
