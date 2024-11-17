@@ -18,6 +18,8 @@ login.addEventListener("submit",(e)=>{
         var username_elem = document.getElementById("username_login")
         var password_elem = document.getElementById("password_login")
         if(all_usersnames.includes(name) && all_userspasswords.includes(password)){
+            username_elem.style.borderColor = "black"
+            password_elem.style.borderColor = "black"
              window.location = "rooms.html"
         }else if(!all_usersnames.includes(name)){
             username_elem.style.borderColor = "red"
