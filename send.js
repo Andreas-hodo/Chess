@@ -15,9 +15,15 @@ login.addEventListener("submit",(e)=>{
         all_userspasswords.push(doc.data().password)
        });
      }).then(() =>{
+        var username_elem = document.getElementById("username_login")
+        var password_elem = document.getElementById("password_login")
         if(all_usersnames.includes(name) && all_userspasswords.includes(password)){
              window.location = "rooms.html"
-        }   
+        }else if(!all_usersnames.includes(name)){
+            username_elem.style.borderColor = "red"
+        }else if(!all_userspasswords.includes(password)){
+            password_elem.style.borderColor = "red"
+        }  
      })
      .catch(error => {
        console.error("Error getting documents: ", error);
