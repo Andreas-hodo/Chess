@@ -51,9 +51,7 @@ background-image: none;
     background-color: rgb(240,201,150);
 }
 #turn{
-    position: absolute;
-    z-index: 10;
-    top:5%;
+   display:none;
 }
 
 .promote {
