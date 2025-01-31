@@ -92,7 +92,7 @@ function connect_user(){
   let allplayersRef = firebase.database().ref(`players`)
   let allRoomsRef = firebase.database().ref(`Rooms`)
   let allGamesRef = firebase.database().ref(`Games`)
-  queryString = queryString.substring(4); 
+  queryString = queryString.substring(5); 
   queryString = queryString == "" ? `Guest_${getRandom(0,9,4)}` : queryString
  firebase.auth().onAuthStateChanged((user) =>{
     if(user){
