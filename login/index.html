@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <link rel="icon" href="images/logo.webp">
+</head>
+<link rel="stylesheet" href="style/cookies.css">
+<link rel="stylesheet" href="style/connect.css">
+<body>
+<form method="post" id="login_form">
+<h1 id ="title">Login</h1>
+<div id="change_forms">
+<div id="login_first" class="forms_btns">Login</div><div id="signup_first"class="forms_btns signup">Signup</div>
+</div>
+<input type ="email" id="username_login" name="username_login" placeholder="Email" minlength="3" maxlength="25" required></input>
+<input type ="password" id="password_login" name="password_login" placeholder="Password"  minlength="7" maxlength="10" required></input>
+<i class="fas fa-eye-slash eyebtn" id="login"></i>
+<div class="linkscont">
+    <a href="#" class="guest_links link">Forgot Password?</a>
+    <a href="https://andreas-hodo.github.io/Chess/Game/offline" class="guest_links link  playoffline">Play Offline!</a>
+</div>
+<button type ="submit" id="loginbtn">Login</button>
+<div id ="member_link"><label for="member">Not a member?</label><a id="member_sign" class = "link">Signup now</a></div>
+</form>
+
+<form method="post" id ="signup_form">
+<h1 id ="title">Signup</h1>
+<div id="change_forms">
+<div id="login_second" class="forms_btns login">Login</div><div id="signup_second"class="forms_btns">Signup</div>
+</div>
+<input type ="email" id="username_signup" name="username_signup"  minlength="3" maxlength="25" placeholder="Email" required></input>
+<input type ="password" id="password_signup" name="password_signup" minlength="7" maxlength="10" placeholder="Password" required></input>
+<i class="fas fa-eye-slash eyebtn" id="signup"></i>
+<div class="linkscont">
+    <a href="https://andreas-hodo.github.io/Chess/Game/offline" class="guest_links link playoffline">Play Offline!</a>
+</div>
+<button type ="submit" id="signupbtn">Signup</button>
+<div id ="member_link"><label for="member_log">Already have an account?</label><a id="member_log" class = "link">Login</a></div>
+</form>   
+<script src="https://kit.fontawesome.com/76c3367925.js" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="script/connect.js"></script>
+<script src="script/firebase_connection.js"></script>
+<script src="script/send.js"></script>
+<script src="script/cookies.js"></script>
+<script src="script/app.js"></script>
+</body>
+</html>
