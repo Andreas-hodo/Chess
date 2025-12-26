@@ -1,0 +1,524 @@
+const login = document.getElementById("login_form")
+const signup = document.getElementById("signup_form")
+const login_btn = document.getElementById("loginbtn") 
+const signup_btn = document.getElementById("signupbtn")
+const passforgot = document.getElementById("forgotpass")
+let resendBtn;
+async function generateKey() {
+  const key = await crypto.subtle.generateKey(
+    { name: "AES-GCM", length: 256 },
+    true, 
+    ["encrypt", "decrypt"]
+  );
+  return key;
+}    
+async function getKey() {
+  const key = await generateKey();
+  const exportedKey = await crypto.subtle.exportKey("raw", key);
+  return btoa(String.fromCharCode(...new Uint8Array(exportedKey)));
+}    
+async function safe(data){
+    const secretKey = await getKey();
+    const name_encrypted = CryptoJS.AES.encrypt(data.name, secretKey).toString();
+    const pass_encrypted = CryptoJS.AES.encrypt(data.password, secretKey).toString(); 
+    return {name:name_encrypted,password:pass_encrypted,key:secretKey,secretKey}
+}
+let resetfunc = (e) =>{
+  let email = document.getElementById("username_login").value
+  if(email){
+     message(null,"login","reset",email,false,"","","red")
+     sessionStorage.setItem("reset",true)
+  }else{
+    message(null,"login","reset",email,true,"Please enter your email first!","","red")
+    sessionStorage.removeItem("reset")
+    sessionStorage.setItem(`resend-login`,0)
+  }
+}
+passforgot.onclick = (e) =>{
+  resetfunc(e)
+}
+
+login.addEventListener("submit",(e)=>{
+    e.preventDefault()
+    const auth = firebase.auth();
+    const email = document.getElementById("username_login")
+    const password = document.getElementById("password_login")
+    login_btn.disabled = true
+    login_btn.style.opacity = "0.5"    
+    passforgot.disabled = false
+    passforgot.style.opacity = "1"
+    passforgot.onclick = (e) =>{
+         resetfunc(e)
+    }
+    auth.signInWithEmailAndPassword(email.value, password.value)
+                .then(async (userCredential) => {
+                  login_btn.disabled = false
+                  login_btn.style.opacity = "1"
+                  //cookies(email)                 
+                  //console.log("UserCredential",userCredential)
+                  if(!userCredential.user.displayName){
+                    username()
+                  }else if(userCredential.user.displayName && userCredential.user.emailVerified){
+                    try{
+                    const userDocRef = db.collection("usersDetails").doc(userCredential.user.uid);
+                    if(!userCredential.additionalUserInfo.isNewUser){
+                    await userDocRef.update({
+                      isnewUser: false
+                    })
+                    }
+                    }catch(error){
+                       console.error(error.message)
+                    }
+                  window.location = `https://andreas-hodo.github.io/Chess/games/?new=false`
+                  }                                                    
+                }).catch((error) => {
+                    //console.log(error.message)
+                    login_btn.disabled = false
+                    login_btn.style.opacity = "1"
+                    message(null,"login","",email,true,"Email or Password is incorrect!","","red")                   
+                });  
+})
+signup.addEventListener("submit",(e)=>{
+    e.preventDefault()
+    signup_btn.disabled = true
+    signup_btn.style.opacity = "0.5"
+    const email = document.getElementById("username_signup")
+    const password = document.getElementById("password_signup")
+    emailVerification(email.value,password.value)
+    cookies(email)
+})
+
+
+async function getData(user) {
+  const userDocRef = db.collection("usersDetails").doc(user.uid);
+  const docSnapshot = await userDocRef.get();
+  return docSnapshot.data()
+}
+
+async function cookiesActions(user, collectionName, data, actiondb) {
+  const actions = {
+    set: async (docRef, dataToSet) => {
+      try {
+        await docRef.set(dataToSet);
+        console.log("Document set successfully.");
+        return dataToSet;
+      } catch (error) {
+        console.error("Error setting document:", error.message);
+        alert("An error has occurred!");
+        throw error; 
+      }
+    },
+    update: async (docRef, dataToUpdate) => {
+      try {
+        await docRef.update(dataToUpdate);
+        return dataToUpdate; 
+      } catch (error) {
+        console.error("Error updating document:", error.message);
+        alert("An error has occurred!");
+        throw error;
+      }
+    },
+    remove: async (docRef, fieldToDeleteData) => {
+      try {
+        const fieldName = Object.keys(fieldToDeleteData);
+        if (!fieldName) {
+          throw new Error("No field specified for removal.");
+        }
+        fieldName.forEach(async field =>{
+         await docRef.update({
+          [field]: firebase.firestore.FieldValue.delete()
+        }); 
+        })
+        return fieldToDeleteData;
+      } catch (error) {
+        console.error("Error deleting field:", error.message);
+        alert("An error has occurred!");
+        throw error;
+      }
+    },
+  };
+
+  if (user && user.uid) {
+    const userDocRef = db.collection(collectionName).doc(user.uid);
+    try {
+      const docSnapshot = await userDocRef.get();
+      if (actions[actiondb]) {
+        let result;
+        if (actiondb === 'set' || docSnapshot.exists) {
+          result = await actions[actiondb](userDocRef, data);
+          return result;
+        } else {
+          console.warn(`Document for user ${user.uid} does not exist in collection ${collectionName} for ${actiondb} operation.`);
+          return null;
+        }
+      } else {
+        console.error(`Unknown action: ${actiondb}`);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+
+function username(){
+    let auth = firebase.auth()
+  auth.onAuthStateChanged(async user =>{
+    if(user){
+    await getData(user).then(data =>{ 
+      if(data.emailVerified && data.disname == ""){
+        console.log("No username found!")
+      //console.log(user)
+      let popup = document.querySelector(".usernamepanel")
+      if(popup){return}
+      if(user.emailVerified && !user.displayName){
+  let panel = document.createElement("form")
+  panel.classList.add("usernamepanel")
+  panel.innerHTML = `
+  <h3 id="usernametitle">Enter your username:</h3>
+  <input type="text" minlength="3" maxlength="10" id="disname" pattern ="(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{3,10}" title="Username must be 3 to 10 characters long" required>
+  <button type="submit" id="okbtn">OK</button>`
+  let disname;
+  let formchange = (type) =>{
+  let forms = document.querySelectorAll("form")
+  forms.forEach(form =>{
+  form.style.display = type
+  })
+  }
+  formchange("none")
+  document.body.appendChild(panel)
+  //let btn = document.getElementById("okbtn")
+  panel.addEventListener("submit",(e)=>{
+    e.preventDefault()
+    disname = document.getElementById("disname")
+    let disnameVal = disname.value
+    let disnameLen = disnameVal.length >= 3 && disnameVal.length <= 10 ? true : false
+    if(disnameLen){
+    document.body.removeChild(panel)
+    formchange("flex")   
+    updatedisplayname(disnameVal)
+    }  
+  })
+  let updatedisplayname = async (name) =>{
+  await user.updateProfile({
+    displayName: name 
+  }).then(() =>{
+  cookiesActions(user,"usersDetails",{disname:"",emailVerified:""},"remove")
+  window.location = `https://andreas-hodo.github.io/Chess/games/?new=true`
+  }).catch((error) => {
+    alert("Something went wrong!")
+  });
+}
+}
+}
+}) 
+}
+})
+}
+
+function message(loggeduser,form,type,email,error = false,message = "",distype = "",messageColor){
+           let currentUser = loggeduser ? loggeduser.user ?  loggeduser.user : loggeduser : null
+           let useremail = currentUser ? currentUser.email : email
+           let finaltype = type ? type : distype
+           let contelem = document.getElementById(`messageContainer${form}`)
+           let text = {
+            login: (container) =>{login.appendChild(container)},
+            signup: (container)=>{signup.appendChild(container)},
+            verification: async() =>{ 
+              //await  loggeduser.user.sendEmailVerification()
+              try{
+                currentUser.sendEmailVerification()
+                console.log("Email verification sent")
+                cookiesActions(currentUser,"usersDetails",{emailSent:true,emailVerified:""},"update")
+              }catch(error){
+                if(error.code === "auth/too-many-requests"){
+                message(null,"signup","",email,true,"Please try again later!","","red")
+                console.error(error.message)
+                }
+              }           
+            },
+            reset: async()=>{ 
+            //await ResetPassword(useremail);
+            console.log("Reset email sent")
+        passforgot.disabled = true
+        passforgot.style.opacity = "0.5"
+        passforgot.onclick = () =>{}
+      },createcont: (template) =>{       
+        if(contelem){
+          login.removeChild(contelem)
+          contelem.innerHTML = ""
+        }
+        let top = error ? "12%" : "7%"
+        let container = document.createElement("div")
+        contelem = container
+        container.className = "msgcont"
+        container.id = `messageContainer${form}`
+        container.style.top = top
+        container.innerHTML = template
+        text[form](container) 
+        resendBtn = document.getElementById(`resendbtn${form}`)
+        let close = (e) =>{
+        e.target.disabled = true
+        e.target.style.opacity = "0.5"
+        sessionStorage.setItem(`resend-${form}`,Date.now())
+        //e.target.onclick = () =>{}
+        setTimeout(()=>{
+              e.target.disabled = false
+              e.target.style.opacity = "1"
+              //e.target.onclick = () =>{resendfunc(e)}
+              sessionStorage.setItem(`resend-${form}`,0)
+        },60000)
+        }
+        if(!error){
+        let resendfunc = async (e) =>{
+        if(sessionStorage.getItem(`resend-${form}`) == 0){
+        text[finaltype]() 
+        close(e) 
+        }  
+        if(form != "signup"){
+        if(sessionStorage.getItem(`resend-${form}`) == 0){
+          text[form](container) 
+          close(e)
+        }       
+        }
+        } 
+        resendBtn.onclick = (e) =>{
+          resendfunc(e)
+        } 
+        } 
+      }
+      }
+      if(!error && type){
+        text[type]()
+      }
+      let emailTemplate = `<p class="messages first">An ${finaltype} email was sent in</p>
+<p class="messages second" style="top:5%;">${useremail}</p>
+<p class="messages resend">Didnt receive the Email?<a href="#" class="resendbtn" id="resendbtn${form}">Resend Email</a></p>`
+      let errorTemplate = `<p class="messages first" style="color:${messageColor}!important">${message}</p>`
+        if(!contelem && !error){
+            text.createcont(emailTemplate)
+        }else if(contelem && !error){
+          text.createcont(emailTemplate)
+        }else if(!contelem && error){
+          text.createcont(errorTemplate)
+        }else if(contelem && error){
+          contelem.innerHTML = errorTemplate
+          contelem.style.top = "12%"
+        }
+        //Reset Time for resend btn if needed
+        resetTime()
+}
+
+
+async function ResetPassword(email) {
+  const auth = firebase.auth();
+  try {
+    await auth.sendPasswordResetEmail(email);
+  } catch (error) {    
+    if (error.code === "auth/user-not-found") {
+      console.error("No user found with that email address.")
+      sessionStorage.removeItem("reset")
+      sessionStorage.setItem(`resend-login`,0)
+      message(null,"login","reset",email,true,"This account was not found!","","red")
+      //alert("No user found with that email address.");
+    } else if (error.code === "auth/invalid-email") {
+      message(null,"login","reset",email,true,"Email address is not valid!","","red")
+      sessionStorage.setItem(`resend-login`,0)
+      sessionStorage.removeItem("reset")
+      console.error("The email address is not valid.")
+      //alert("The email address is not valid.");
+    } else if(error.code === "auth/too-many-requests"){
+      message(null,"login","reset",email,true,"Please try again later!","","red")
+      sessionStorage.setItem(`resend-login`,0)
+      sessionStorage.removeItem("reset")
+      console.error(error.message)
+    }else{
+      alert("Something went wrong!")
+      sessionStorage.removeItem("reset")
+      sessionStorage.setItem(`resend-login`,0)
+      console.error(error.message)
+    }
+    setTimeout(()=>{
+    passforgot.disabled = false
+    passforgot.style.opacity = "1"
+    passforgot.onclick = () =>{
+      resetfunc()
+    }
+    },500)
+  }
+}
+
+function checkEmailVerified(){
+     let emailVerified = false
+     const auth = firebase.auth();
+  auth.onAuthStateChanged(user =>{
+    if(user){
+      let reloadfunc = async () =>{
+      await user.reload()
+      //console.log(user)
+      emailVerified = user.emailVerified
+      let res = user.emailVerified ? true : ""
+      cookiesActions(user,"usersDetails",{emailVerified:res,disname:""},"update")
+      if(emailVerified){
+        //console.log("Email verified!")
+        try{
+        const userDocRef = db.collection("usersDetails").doc(user.uid);
+          await userDocRef.update({
+            isnewUser: true,
+          })        
+        }catch(error){
+          console.error(error.message)
+        } 
+        cookiesActions(user,"usersDetails",{emailSent:""},"remove")
+        message(user,"signup","",user.email,true,"Email verified successfully!","","green")
+        setTimeout(()=>{
+          username() 
+        },4000)  
+      }else{
+        //console.log("Email still not verified!")
+        setTimeout(reloadfunc,10000)
+      }  
+      }
+      if(!user.emailVerified){
+        reloadfunc()
+      }     
+    }
+    })
+}
+
+
+
+function emailVerification(email,pass){
+const auth = firebase.auth();
+auth.createUserWithEmailAndPassword(email,pass).then((loggeduser) =>{
+   return loggeduser
+}).then(async (loggeduser)=>{
+      if (!loggeduser.emailVerified) { 
+        message(loggeduser,"signup","verification",loggeduser.user.email,false,"","","red")
+        return loggeduser
+      } else {
+        await Promise.resolve()
+}
+}).then((userlogged)=>{
+  checkEmailVerified()
+}).catch((err)=>{
+  signup_btn.disabled = false
+  signup_btn.style.opacity = "1"
+  let emailsign = document.getElementById("username_signup")
+  emailsign.value = ""
+  let passsign = document.getElementById("password_signup")
+  passsign.value = ""
+  alert(err.message)
+})
+}
+
+async function cookies(emailfield){
+  const auth = firebase.auth();
+  auth.onAuthStateChanged(async user => {
+  if (user) {
+    if(user.email && localStorage.getItem("cookiesAccepted") && emailfield.value && !localStorage.getItem("email")){
+      try{
+        const userDocRef = db.collection("usersDetails").doc(user.uid);
+          await userDocRef.set({
+             isnewUser: true,
+            //email:user.email
+          })      
+          }catch(error){
+            console.error(error.message)
+          }
+        //localStorage.setItem("email",emailfield.value)
+    }
+  }
+});
+}
+
+function resetTime(){
+      let forms = ["login","signup"]     
+      forms.forEach(form =>{
+        let resend = document.getElementById(`resendbtn${form}`)
+        if(resend){
+        let currOld = parseInt(sessionStorage.getItem(`resend-${form}`))
+        let currNew = Date.now()
+        let passedtime = currNew - currOld
+        let remainingtime = 60000-passedtime
+        if(passedtime < 60000){
+        resend.disabled = true
+        resend.style.opacity = "0.5"         
+        }else if(passedtime >= 60000){
+          sessionStorage.setItem(`resend-${form}`,0)
+          resend.disabled = false
+          resend.style.opacity = "1"
+        } 
+        setTimeout(()=>{
+          sessionStorage.setItem(`resend-${form}`,0)
+          resend.disabled = false
+          resend.style.opacity = "1"
+        },remainingtime)
+        }     
+      })     
+}
+
+
+
+async function validation(){
+  if(!sessionStorage.getItem("AppInitialized")){
+    sessionStorage.setItem("currentForm","signup")
+    sessionStorage.setItem(`resend-login`,0)
+    sessionStorage.setItem(`resend-signup`,0)
+  }
+  sessionStorage.setItem("AppInitialized",true)
+   const auth = firebase.auth()
+   let index;
+   const autochange = {
+    login: ()=>{
+      index = 1
+      login.style.zIndex = index;
+    },
+    signup:()=>{
+      index = 0
+      login.style.zIndex = index;
+    },
+    autofill:(user,currentform)=>{
+      let emailElem = document.getElementById(`username_${currentform}`)
+      if(emailElem){
+       emailElem.value = user.email 
+      }
+    }
+   } 
+  let form = sessionStorage.getItem("currentForm")
+  if(form){
+    autochange[form]()
+  }
+  auth.onAuthStateChanged(async user => {
+    if(user){        
+      autochange.autofill(user,form)
+      await getData(user).then(data =>{ 
+        //localStorage.getItem("emailSent") && localStorage.getItem("emailVerified") == ""     
+      if(data.emailSent && data.emailVerified == ""){
+        console.log("Email sent but not verified!")
+        signup_btn.disabled = true
+        signup_btn.style.opacity = "0.5"
+        message(user,"signup","",user.email,false,"","verification","red")
+        checkEmailVerified()
+      }    
+      })
+    }       
+    if(sessionStorage.getItem("reset")){
+      let email = document.getElementById("username_login").value
+      if(email){
+        message(null,"login","",email,false,"","reset","red")
+        passforgot.disabled = true
+        passforgot.style.opacity = "0.5"
+        passforgot.onclick = () =>{}
+      }else{
+        message(null,"login","reset",email,true,"Please enter your email first!","","red")
+      }     
+    }  
+  }) 
+  username() 
+}
+window.onload = validation()
