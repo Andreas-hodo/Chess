@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <link rel="icon" href="images/logo.webp">
+    <link rel="stylesheet" href="style/welcome.css">
+</head>
+<body>
+
+<div class="upper">
+  <div class="text">
+    <h1 id="header">Welcome to Chess</h1>
+    <hr id="line">
+    <h4 class="message second">Play online with other players</h4><h4 class="message second"> or play offline</h4>
+  </div>
+</div> 
+<div class="lower">
+    <div class="action-box">
+      <div class="lower_message">
+        <h4 class="message second">You can <span><h4 class="highlighted" >create an account</h4></span> for free</h4>
+        <h4 class="message second">using your email address</h4>
+        <h4 class="message second">or you can <span><h4 class="highlighted">play locally</h4></span> on your device</h4>
+      </div>
+      <div class="lower_actions">
+    <button class="btn primary" onclick="redirect('login')">Create Account</button>   
+    <span style="font-weight: 500;color:white">or</span>
+    <button class="btn secondary" onclick="redirect('offline')">Play Offline</button>
+      </div>
+    </div>
+
+</div>
+<script>
+  function redirect(page){
+    let pages = {
+      login: ()=>{
+        window.location='https://andreas-hodo.github.io/Chess/login/'
+      },
+      offline:()=>{
+        window.location='https://andreas-hodo.github.io/Chess/Game/offline/'
+      }
+    }
+    pages[page]()
+  }
+</script>
+</body>
+</html>
