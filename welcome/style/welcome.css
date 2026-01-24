@@ -1,0 +1,187 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100dvh;
+  background: radial-gradient(circle at top,#484848,#0b0f0d);
+}
+
+#header{
+  color:#2ecc71;
+}
+
+.message{
+  font-family: sans-serif;
+  display: inline-block;
+  font-weight: 500;
+  margin-left: 5px;
+  color:white;
+}
+.second{
+  margin: 8px;
+}
+
+.upper {
+  background-image: url("../images/chess-5519065_1280.jpg");
+  height: 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.text{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.btns{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50dvh;
+}
+.lower{
+  min-height: 40vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 38px;
+  backdrop-filter: blur(6px);
+  height: 600px;
+}
+
+.action-box{
+  background: rgba(0,0,0,0.45);
+  padding: 35px 35px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 68px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  height:350px;
+  width:80%;
+  justify-content: center;
+  opacity: 0.9;
+  gap:0;
+  width: 50em;
+}
+
+.btn{
+  width: 240px;
+  padding: 14px 0;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+}
+.primary{
+  background: #2ecc71;
+  color: #0b0f0d;
+}
+.primary:hover{
+  background: #27ae60;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(46,204,113,0.4);
+}
+
+.secondary{
+  background: transparent;
+  color: #2ecc71;
+  border: 2px solid #2ecc71;
+}
+
+.secondary:hover{
+  background: #2ecc71;
+  color: #0b0f0d;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(46,204,113,0.4);
+}
+.highlighted{
+  color: #2ecc71;
+  text-decoration: none;
+  display: inline-block;
+  margin:0;
+}
+
+.highlighted:hover{
+  text-decoration: underline;
+}
+
+.lower_message,.lower_actions{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width:60%;
+  height:100%;
+  gap: 10px;
+}
+.lower_actions{
+ gap: 40px;
+ border-left: 2px solid #484;
+}
+.text{
+  width:80%;
+}
+.headerBox{
+  width:100%;
+  display: flex;
+  justify-content: center;
+
+}
+.lower_actions .messageBox{
+ gap: 18px; 
+}
+.messageBox{
+  width:100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
+}
+
+@media  screen and (max-width:875px) {
+  body{
+    background: radial-gradient(circle at top, #484848,#0b0f0d);
+  } 
+  .action-box{
+    width: 80%;
+    flex-direction: column;
+    height:430px;
+  }
+  #header{
+  font-size:25px;
+}
+.second{
+  margin: 5px 2px;
+}
+.upper{
+  height:200px;
+}
+.lower_message{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.lower_actions{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ border: none;
+ width:100%;
+}
+.lower_actions .headerBox{
+  display: none;
+}
+.lower_message,.lower_actions{
+  gap:10px;
+  justify-content: center;
+}
+}
