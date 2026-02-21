@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <link rel="icon" href="images/logo.webp">
+    <link rel="stylesheet" href="style/welcome.css">
+</head>
+<body>
+<div class="upper"></div> 
+<div class="lower">     
+    <div class="rules">
+          <div class="action-box">     
+      <div class="lower_message">
+        <div class="headerBox"><h1 class="header">Welcome to Chess</h1></div>
+        <div class="messageBox">
+        <h4 class="message">Play online with other players or play offline</h4>
+        <h4 class="message second">You can <span><a class="highlighted" href="https://andreas-hodo.github.io/Chess/login/">create an account</a></span> for free</h4>
+        <h4 class="message second">using your email address</h4>
+        <h4 class="message second">or you can <span><a class="highlighted" href="https://andreas-hodo.github.io/Chess/Game/offline/">play locally</a></span> on your device</h4>
+        </div>
+      </div>
+      <div class="lower_actions">
+      <div class="messageBox">
+      <button class="btn primary" onclick="redirect('login')">Create Account</button>   
+      <span style="font-weight: 500;color:white">or</span>
+      <button class="btn secondary" onclick="redirect('offline')">Play Offline</button>
+      </div>
+      </div>
+      </div>
+      <h3 id="learnTitle">How to play Chess</h3>
+    <p class="description">The chessboard consists of 64 squares, 8 columns horizontally and 8 rows vertically, colored alternately white and black.</p>
+    <img src="./images/chess-board.gif" alt="setupGif" width="200" height="200">
+    <h5 class="rulesTitles">1) Board Setup</h5>
+    <ul>
+     <li class="rule">Rooks are placed in the edges of the board</li>
+     <li class="rule">knights are placed next of the Rooks</li>
+     <li class="rule">Bishops are placed next of the knights</li>
+     <li class="rule">The queen and king go next to the Bishops, the queen always goes in her color (e.g. if the queen is white, she will go next to the bishop whose square is black) and the king goes in the opposite color.</li>
+     <li class="rule">The pawns enter the second row.</li>        
+    </ul> 
+    <h5 class="rulesTitles">2) Pieces moves</h5>   
+    <ul>
+    <li class="rule">The rooks move straight in all directions (within the chessboard).</li>
+    <li class="rule">The knights move in a "Γ" shape (within the chessboard), meaning 2 moves forward or backward and one move to the right or left.</li>
+    <li class="rule">The bishops move sideways in the color they initially started on the chessboard, for example (the bishop who started on a white-colored square moves sideways only on white squares)</li>
+    <li class="rule">The queen can make the moves of the bishop and the rook simultaneously within the chessboard (i.e. she can move both sideways and straight).</li>
+    <li class="rule">The king can move in all directions by one square.</li>
+    <li class="rule">Pawns move two squares forward in their starting position and one square forward in all other positions (they cannot move backwards).</li>
+<b>Note: The player with white pieces moves first. Also, no two pieces can be on the same square at the same time, nor can any piece pass over a square that contains a piece of the same color (except for knights, which are the only pieces that can pass over other pieces).</b>
+</ul>
+<h5 class="rulesTitles">3) Captures</h5>
+<ul>
+ <li class="rule">When two pieces are on the same square after a move,<b>the second piece captures the first</b> (the first piece that was captured is removed from the board).</li>
+ <li class="rule">Each piece captures exactly as its movements are, e.g. the rook captures straight, the bishop captures sideways, etc.</li>
+<b>Note: Pawns can only capture <big>sideways</big> one square and when any other piece (of the same team or not) is <big>in front</big> of the pawn, the pawn cannot move forward but it can capture sideways.</b> Also, <big><b>THE KING CANNOT BE CAPTURED .</b></big>
+</ul>
+  <h5 class="rulesTitles">4) Pieces Values</h5>
+  <p>Every piece in chess has a specific value that helps the player to evaluate a position</p>
+  <table id="valuesTable">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Rook:</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Knight:</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>Bishop:</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>Queen:</td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td>King:</td>
+        <td>infinite</td>
+      </tr>
+      <tr>
+        <td>Pawn:</td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="rulesTitles">5) Check</h5>
+  <ul>
+ <li class="list">When a king is under threat, we say that it is in check(The king can be catured on the next move which is illegal). When the king is in check, it must either move to stop being in check or a piece  must make a move to block the path of the opponent's piece or capture the opponent piece that is threatening the king.</li>
+</ul>
+<h5 class="rulesTitles">6) Special Moves</h5>
+<ul>
+ <li class="list">Promotion: Once a pawn reaches the 8th row for white pawns or 1st row for black pawns either through a capture or a straight move, that player has the right to promote that pawn to:
+ <ol>
+  <li>Rook</li>
+   <li>Knight</li>
+    <li>Bishop</li>
+     <li>Queen</li>
+ </ol>
+ </li><li class="list">Castling: Castling is a special move that takes place between the king and one of the rooks at a time.To do this move you must move the king 2 squares closer to the rook then at the same time to move the rook 2 squares at the opposite move direction of the king. For castling to be possible, certain conditions must be met:
+ <ol>
+  <li>The king should not be in check at the given moment.</li>
+   <li>The intermediate squares through which the king will pass should not be threatened(At this moment).</li>
+    <li><b>The king must never have moved </b>from its original position.</li>
+     <li>The rook with which the castling will be performed must <b>never</b> have been moved from its position</li>
+      <li>There must be no pieces between the king and the rook with which the castling will take place.</li>
+  <li>There are 2 types of castling:<ol><li>The small castling: Which is done with the king's rook(with the rook that is closer to king) </li><li>The grand castling: Which is done with the queen's rook(the rook which is further to the king)</li></ol></li>
+ </ol>
+ </li>
+<li class="list">En passant is a move that occurs when a pawn reaches the 3rd or 5th row respectively and the opponent moves the pawn that is on the right horizontal line or the left horizontal line. These pawns before this move are on the same row next to each other. The player who has the en passant ability can capture the opponent's pawn sideways and move to the position where he would capture the pawn.</li>
+</ul>
+<h5 class="rulesTitles">7) Pins</h5>
+<ul>
+  <li>If a piece of the same team is on the same row or column as the allied king or diagonally this piece might be pinned be an enemy piece and this situation limits the legal moves of this piece.For example if a white queen is in the same column with the black king and the black queen and black queen is in front of black king(no matter how many squares the black queen is infront of black king , but between white queen and black king must be only the black queen)the black queen cannot move diagonally,in this situation we can say that the black queen is pinned by the white queen</li>
+</ul>
+<h5 class="rulesTitles">8) Checkmate</h5>
+<ul>
+  <li class="list">Checkmate is the win state. In order one the players to achieve checkmate must the opponent's king be in <b>Check</b> and the opponent must <b>not have any legal moves</b>(moves that agree with rules of chess)</li>
+</ul>
+<h5 class="rulesTitles">9) Draw</h5>
+<ul>
+  <li class="list">Draw is the game state when no one wins.There are multiple ways for a chess game to end to a draw.The most common way is when the playr's turn king is <b>not in Check</b> but it hasn't any legal moves not only with the king but also with the other remaining pieces</li>
+  <li>Threefold Repetition: The game is a draw if the exact same position (same side to move, same rights) occurs three times, even if not consecutively. It must be claimed by a player, though it is often automatic online.</li>
+  <li>Fifty-Move Rule: If 50 consecutive moves pass without a pawn move or a capture by either side, a player can claim a draw.</li>
+  <li>Insufficient Material:The game ends immediately if neither player has enough pieces to force a checkmate (e.g., King vs. King, King and Knight vs. King, or King and Bishop vs. King).</li>
+  <li>Mutual Agreement: Players can agree to a draw at any time.</li>
+</ul>
+    </div>
+    </div>
+<script>
+  function redirect(page){
+    let pages = {
+      login: ()=>{
+        window.location='https://andreas-hodo.github.io/Chess/login/'
+      },
+      offline:()=>{
+        window.location='https://andreas-hodo.github.io/Chess/Game/offline/'
+      }
+    }
+    pages[page]()
+  }
+</script>
+</body>
+</html>
