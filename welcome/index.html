@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess — Play Online or Offline</title>
+    <link rel="icon" href="images/logo.webp">
+    <link rel="stylesheet" href="style/welcome.css">
+    <meta name="description" content="Play chess online or offline">
+    <meta name="keywords" content="chess, game, play, strategy, multiplayer games">
+</head>
+<body>
+
+<header class="hero">
+    <nav class="nav">
+        <div class="brand">
+            <span class="brand-icon">♞</span>
+            <span>CHESS</span>
+        </div>
+        <button class="btn nav-btn" onclick="redirect('login')">Start Playing</button>
+    </nav>
+
+    <div class="hero-content">
+        <div class="eyebrow">♟ YOUR NEXT MOVE STARTS HERE</div>
+        <h1>Welcome to <span>Chess</span></h1>
+        <p>Play online with other players or enjoy a local game on your device.</p>
+
+        <div class="hero-actions">
+            <button class="btn primary" onclick="redirect('login')">Create Free Account</button>
+            <button class="btn secondary" onclick="redirect('offline')">Play Offline</button>
+        </div>
+
+        <div class="hero-note">No account required for offline play</div>
+    </div>
+</header>
+
+<main>
+    <section class="intro section">
+        <div class="section-heading">
+            <span class="section-number">01</span>
+            <div>
+                <p class="section-kicker">GET STARTED</p>
+                <h2>Choose how you want to play</h2>
+            </div>
+        </div>
+
+        <div class="choice-grid">
+            <article class="choice-card">
+                <div class="choice-icon">♟</div>
+                <h3>Play Online</h3>
+                <p>Create an account for free using your email address and play with other players.</p>
+                <a class="card-link" href="https://andreas-hodo.github.io/Chess/login/">Create an account <span>→</span></a>
+            </article>
+
+            <article class="choice-card">
+                <div class="choice-icon">♜</div>
+                <h3>Play Offline</h3>
+                <p>Start a local chess game directly on your device without creating an account.</p>
+                <a class="card-link" href="https://andreas-hodo.github.io/Chess/Game/offline/">Play locally <span>→</span></a>
+            </article>
+        </div>
+    </section>
+
+    <section class="rules section" id="learn">
+        <div class="section-heading centered">
+            <span class="section-number">02</span>
+            <div>
+                <p class="section-kicker">LEARN THE GAME</p>
+                <h2>How to play Chess</h2>
+                <p class="section-lead">A quick guide to the board, pieces, captures and the rules that shape every game.</p>
+            </div>
+        </div>
+
+        <div class="board-preview">
+            <div class="board-glow"></div>
+            <img src="./images/chess-board.gif" alt="Chess board setup">
+        </div>
+
+        <div class="rule-section">
+            <h3><span>01</span> Board Setup</h3>
+            <ul>
+                <li>Rooks are placed in the edges of the board.</li>
+                <li>Knights are placed next to the rooks.</li>
+                <li>Bishops are placed next to the knights.</li>
+                <li>The queen and king go next to the bishops. The queen always goes in her color and the king goes in the opposite color.</li>
+                <li>The pawns enter the second row.</li>
+            </ul>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>02</span> Piece Moves</h3>
+            <ul>
+                <li>The rooks move straight in all directions within the chessboard.</li>
+                <li>The knights move in a "Γ" shape: two squares forward or backward and one square to the right or left.</li>
+                <li>The bishops move diagonally on the color they initially started on.</li>
+                <li>The queen can make the moves of the bishop and the rook simultaneously.</li>
+                <li>The king can move in all directions by one square.</li>
+                <li>Pawns move two squares forward from their starting position and one square forward in all other positions.</li>
+            </ul>
+            <div class="note"><strong>Note:</strong> White moves first. No two pieces can occupy the same square, and pieces cannot pass through a piece of the same color, except knights.</div>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>03</span> Captures</h3>
+            <ul>
+                <li>When two pieces are on the same square after a move, the second piece captures the first.</li>
+                <li>Each piece captures according to its movement.</li>
+            </ul>
+            <div class="note"><strong>Note:</strong> Pawns capture one square diagonally. The king cannot be captured.</div>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>04</span> Piece Values</h3>
+            <p>Every piece in chess has a specific value that helps the player evaluate a position.</p>
+            <div class="table-wrap">
+                <table id="valuesTable">
+                    <thead>
+                        <tr><th>Piece</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Rook</td><td>5</td></tr>
+                        <tr><td>Knight</td><td>3</td></tr>
+                        <tr><td>Bishop</td><td>3</td></tr>
+                        <tr><td>Queen</td><td>9</td></tr>
+                        <tr><td>King</td><td>∞</td></tr>
+                        <tr><td>Pawn</td><td>1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>05</span> Check</h3>
+            <ul>
+                <li>When a king is under threat, it is in check. The player must move the king, block the attack, or capture the threatening piece.</li>
+            </ul>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>06</span> Special Moves</h3>
+            <ul>
+                <li><strong>Promotion:</strong> When a pawn reaches the last rank, it can be promoted to a rook, knight, bishop or queen.</li>
+                <li><strong>Castling:</strong> A special move involving the king and a rook. The king moves two squares toward the rook while the rook moves to the square next to the king. The king and rook must not have moved, the king cannot be in check, the king cannot cross a threatened square, and no pieces may be between them.</li>
+                <li><strong>En passant:</strong> A special pawn capture that can occur immediately after an opposing pawn advances two squares beside it.</li>
+            </ul>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>07</span> Pins</h3>
+            <ul>
+                <li>A piece may be pinned when moving it would expose its allied king to an enemy attack, limiting the piece's legal moves.</li>
+            </ul>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>08</span> Checkmate</h3>
+            <ul>
+                <li>Checkmate is the win state: the opponent's king is in check and the opponent has no legal move to escape.</li>
+            </ul>
+        </div>
+
+        <div class="rule-section">
+            <h3><span>09</span> Draw</h3>
+            <ul>
+                <li>A draw is a game state where no one wins. One common case is when a player has no legal moves and their king is not in check.</li>
+                <li><strong>Threefold Repetition:</strong> The exact same position occurs three times.</li>
+                <li><strong>Fifty-Move Rule:</strong> 50 consecutive moves pass without a pawn move or capture.</li>
+                <li><strong>Insufficient Material:</strong> Neither player has enough material to force checkmate.</li>
+                <li><strong>Mutual Agreement:</strong> Players can agree to a draw.</li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="brand"><span class="brand-icon">♞</span><span>CHESS</span></div>
+    <p>Every move matters.</p>
+</footer>
+
+<script>
+function redirect(page) {
+    const pages = {
+        login: 'https://andreas-hodo.github.io/Chess/login/',
+        offline: 'https://andreas-hodo.github.io/Chess/Game/offline/'
+    };
+    if (pages[page]) window.location = pages[page];
+}
+</script>
+
+</body>
+</html>
