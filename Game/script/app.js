@@ -345,7 +345,6 @@ class Board{
     this.#removelastMove()
     let newNotation = this.getis_Draw() ? "1/2-1/2" : this.getis_Checkmate() ? `${lastNotation}#` : this.getisCheck() ? `${lastNotation}+` : lastNotation
     this.addMove(newNotation)
-    this.updateturn()
     this.showNotation()
   }
   showNotation(){
