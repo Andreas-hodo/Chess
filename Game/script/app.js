@@ -2313,7 +2313,7 @@ class Engine extends Player{
     super(name,team,role)
   }
   init(){//Game/stockfish/stockfish-19-lite-single.js small path "https://andreas-hodo.github.io/Chess/Game/stockfish/stockfish-19-lite-single.js"
-    this.stockfish = new Worker("/Game/stockfish/stockfish-19-lite-single.js");
+    this.stockfish = new Worker("https://andreas-hodo.github.io/Chess/Game/stockfish/stockfish-19-lite-single.js");
     this.stockfish.onmessage = (event) => {
       const message = String(event.data).trim();
       if(message === "uciok") {
